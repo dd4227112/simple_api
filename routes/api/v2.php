@@ -1,7 +1,5 @@
 <?php
 
-// use App\Http\Controllers\Api\V1\TaskController;
-
 use App\Http\Controllers\Api\V2\TaskController;
 use App\Http\Controllers\Api\V2\CompleteTaskController;
 use Illuminate\Support\Facades\Route;
