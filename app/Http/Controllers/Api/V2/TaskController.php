@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api\V2;
+
 use  App\Http\Controllers\Controller;
 
 use App\Http\Requests\StoreTaskRequest;
@@ -13,9 +14,14 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class);
+    }
+
     public function index()
     {
-       return TaskResource::collection(auth()->user()->tasks()->get());
+        return TaskResource::collection(auth()->user()->tasks()->get());
     }
 
     /**
@@ -31,8 +37,8 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-       $task = $request->auth()->user()->tasks()::create($request->validated());
-       return TaskResource::make($task);
+        $task = $request->auth()->user()->tasks()::create($request->validated());
+        return TaskResource::make($task);
     }
 
     /**
@@ -40,6 +46,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        //$this->authorize('view', $task); // We can authorize all request via constructor class above
         return TaskResource::make($task);
     }
 
@@ -56,9 +63,9 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-       
+
         $task->update($request->validated());
-       return TaskResource::make($task);
+        return TaskResource::make($task);
     }
 
     /**
@@ -68,7 +75,7 @@ class TaskController extends Controller
     {
         $task->delete();
         //return TaskResource::collection(Task::all());
-        $response = ['message' => 'Tasks with id='.$task->id.' deleted successsfully'];
+        $response = ['message' => 'Tasks with id=' . $task->id . ' deleted successsfully'];
         // return response()->noContent();
         return json_encode($response);
     }
